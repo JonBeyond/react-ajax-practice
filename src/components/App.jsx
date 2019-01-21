@@ -32,8 +32,8 @@ class App extends React.Component {
          */
         event.preventDefault(); //stops HTML from being submitted
         let message = {
-            username: this.state.username,
-            message: this.state.message
+            "name": this.state.username,
+            "message": this.state.message
         }
 
         $.ajax({
