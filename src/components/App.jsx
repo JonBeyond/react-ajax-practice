@@ -8,9 +8,11 @@ class App extends React.Component {
         super(props); //I dont think any props will be required? TBD
         this.handleSubmit = this.handleSubmit.bind(this); //forever binds this to the App instance.
         this.handleChange = this.handleChange.bind(this);
+        this.updateSuccess = this.updateSuccess.bind(this);
         this.state = {
             username: 'default',
-            message: 'default'
+            message: 'default',
+            response: 'no AJAX received'
         }
     }
     handleChange (event) {
@@ -21,9 +23,13 @@ class App extends React.Component {
             username: event.target.username.value,
             message: event.target.message.value
         })
-
-
     }
+    updateSuccess (ajaxmsg) {
+        this.setState({
+            response: ajaxmsg
+        });
+    }
+
     handleSubmit (event) {
         /* Input: username and text
          * Output: an AJAX post command
@@ -41,7 +47,10 @@ class App extends React.Component {
             type: 'POST',
             data: JSON.stringify(message),
             contentType: 'application/json',
-            success: (success) => {console.log(`POST Success: ${JSON.stringify(success)}`)},
+            success: (success) => {
+                console.log(`POST Success: ${JSON.stringify(success)}`)
+                this.updateSuccess(success);
+                },
             error: (error) => {console.log(`POST error: ${JSON.stringify(error)}`)}
         })
 
@@ -63,7 +72,7 @@ class App extends React.Component {
                     <button>Submit AJAX POST</button>
                 </form>
                     <div>AJAX Response below</div>
-                    <div id="AJAX">TBD</div>
+                    <div id="AJAX">{this.state.response}</div>
             </div>
           )
     }
